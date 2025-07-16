@@ -9,10 +9,17 @@ Sub sheet_creation_click()
     Dim i As Integer
     Dim ws As Worksheet
     Dim exists As Boolean
+    
+    Dim rowIndex As Integer
+    Dim classified As String
+    Dim uri As String
+    Dim desc As String
 
+    Set apiSheet = Worksheets("API목록")
     Set selectedRange = Selection
+    rowIndex = selectedRange.Row
+    
     If selectedRange.Count = 1 Then
-        'Cell 1개 선택
         sheetCount = selectedRange.Count
 
         ReDim sheetNames(1, 1) As Variant
@@ -24,7 +31,13 @@ Sub sheet_creation_click()
     End If
 
     For x = 1 To sheetCount
+        
+        classified = apiSheet.Cells(rowIndex + x - 1, 1).Value
+        uri = apiSheet.Cells(rowIndex + x - 1, 2).Value
+        desc = apiSheet.Cells(rowIndex + x - 1, 5).Value
     
+        'MsgBox classified & " " & uri & " " & desc
+
         baseName = sheetNames(x, 1)
         newName = baseName
         'MsgBox newName
@@ -58,5 +71,10 @@ Sub sheet_creation_click()
         ActiveSheet.Name = newName
         '시트 색 지정
         ActiveSheet.Tab.Color = RGB(255, 255, 0)
+        
+        ActiveSheet.Cells(4, 2).Value = classified
+        ActiveSheet.Cells(4, 5).Value = uri
+        ActiveSheet.Cells(4, 12).Value = desc
+        
     Next x
 End Sub
